@@ -10,8 +10,17 @@ export function calculateExpenses(data: any[]): number {
         .reduce((sum, record) => sum + record.total_value, 0);
 }
 
+export function calculateSalesDebit(data: any[]): number {
+    return data
+        .filter(record => record.account_category === 'revenue' && record.value_type === 'debit')
+        .reduce((sum, record) => sum + record.total_value, 0);
+}
+
 export function calculateGrossProfitMargin(revenue: number, salesDebit: number): number {
-    return salesDebit / revenue;
+    if (revenue === 0) {
+        throw new Error('Revenue cannot be zero');
+    }
+    return (salesDebit / revenue) * 100;
 }
 
 export function calculateNetProfitMargin(revenue: number, expenses: number): number {
@@ -19,13 +28,43 @@ export function calculateNetProfitMargin(revenue: number, expenses: number): num
 }
 
 export function calculateWorkingCapitalRatio(data: any[]): number {
-    const assets = data
-        .filter(record => record.account_category === 'assets' && record.value_type === 'debit')
+    const totalAssets = data
+      .filter(
+        record =>
+          record.account_category === 'assets' &&
+          record.value_type === 'debit' &&
+          ['current', 'bank', 'current_accounts_receivable'].includes(record.account_type)
+      )
+      .reduce((sum, record) => sum + record.total_value, 0) -
+      data
+        .filter(
+          record =>
+            record.account_category === 'assets' &&
+            record.value_type === 'credit' &&
+            ['current', 'bank', 'current_accounts_receivable'].includes(record.account_type)
+        )
         .reduce((sum, record) => sum + record.total_value, 0);
-
-    const liabilities = data
-        .filter(record => record.account_category === 'liability' && record.value_type === 'credit')
+  
+    const totalLiabilities = data
+      .filter(
+        record =>
+          record.account_category === 'liability' &&
+          record.value_type === 'credit' &&
+          ['current', 'current_accounts_payable'].includes(record.account_type)
+      )
+      .reduce((sum, record) => sum + record.total_value, 0) -
+      data
+        .filter(
+          record =>
+            record.account_category === 'liability' &&
+            record.value_type === 'debit' &&
+            ['current', 'current_accounts_payable'].includes(record.account_type)
+        )
         .reduce((sum, record) => sum + record.total_value, 0);
-
-    return assets / liabilities;
-}
+  
+    if (totalLiabilities === 0) {
+      throw new Error('Total liabilities cannot be zero when calculating Working Capital Ratio.');
+    }
+  
+    return totalAssets / totalLiabilities;
+  }

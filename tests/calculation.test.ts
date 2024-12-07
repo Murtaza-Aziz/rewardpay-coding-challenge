@@ -1,5 +1,6 @@
 import {
   calculateRevenue,
+  calculateSalesDebit,
   calculateGrossProfitMargin,
   calculateNetProfitMargin,
   calculateExpenses,
@@ -21,8 +22,17 @@ test("Calculates Expenses Correctly", () => {
   expect(calculateExpenses(mockData)).toBe(500);
 })
 
+test("Calculates Sales Debit Correctly", () => {
+    const mockData = [
+        { account_category: 'revenue', value_type: 'debit', total_value: 100 },
+        { account_category: 'revenue', value_type: 'credit', total_value: 200 },
+        { account_category: 'revenue', value_type: 'debit', total_value: 300 },
+      ];
+  expect(calculateSalesDebit(mockData)).toBe(400);
+})
+
 test("Calculates Gross Profit Margin Correctly", () => {
-  expect(calculateGrossProfitMargin(1000, 1000)).toBe(1);
+  expect(calculateGrossProfitMargin(1000, 1000)).toBe(100);
 })
 
 test("Calculates Net Profit Margin Correctly", () => {
