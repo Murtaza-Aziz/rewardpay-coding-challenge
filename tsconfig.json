@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "module": "commonjs", // Jest works with CommonJS modules by default
+      "target": "es6",
+      "esModuleInterop": true,
+      "strict": true,
+      "moduleResolution": "node",
+      "outDir": "./dist",
+      "resolveJsonModule": true
+    },
+    "include": ["src/**/*", "tests/**/*"]
+  }  
