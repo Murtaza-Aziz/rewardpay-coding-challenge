@@ -21,16 +21,18 @@ This project implements a solution to calculate accounting metrics (Revenue, Exp
 
 ## Project Structure
 
-|-- src/
-|   |-- index.ts           // Entry point
-|   |-- calculations.ts    // Calculation functions
-|   |-- parser.ts          // Parse data.json
-|   |-- formatter.ts       // Format outputs
-|-- tests/                 // Unit tests
-|-- data.json              // Input data file
-|-- package.json           // Project dependencies
-|-- tsconfig.json          // TypeScript configuration
-|-- jest.config.js         // Jest configuration
+```plaintext
+src/
+├── index.ts           // Entry point
+├── calculations.ts    // Calculation functions
+├── parser.ts          // Parse data.json
+├── formatter.ts       // Format outputs
+tests/                 // Unit tests
+data.json              // Input data file
+package.json           // Project dependencies
+tsconfig.json          // TypeScript configuration
+jest.config.js         // Jest configuration
+```
 
 
 
